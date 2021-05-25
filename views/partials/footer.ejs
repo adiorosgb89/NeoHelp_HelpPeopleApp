@@ -1,0 +1,68 @@
+<footer class="d-flex row w-100 m-0  footer-color">
+    <div class="container d-flex p-0 m-0 row mt-3 ">
+        <div class=" d-flex col-md m-0 p-0 justify-content-center  ">
+            <ul class=" nav flex-md-column justify-content-center">
+                <li class="nav-item">
+                    <a class="nav-link <% if (page_name === 'acasa') { %>active-color <% } %> p-0" href="/">Pagina
+                        principala</a>
+                </li>
+                <li class="nav-item m-md-0 mx-3 mt-md-3">
+                    <a class="nav-link  <% if (page_name === 'despre') { %>active-color <% } %> p-0"
+                        href="/despre">Despre Noi</a>
+                </li>
+                <li class="nav-item m-0 mt-md-3">
+                    <a class="nav-link <% if (page_name === 'contact') { %>active-color <% } %> p-0"
+                        href="/contact">Contact</a>
+                </li>
+                <li class="nav-item m-md-0 mx-3 mt-md-3">
+                    <a class="nav-link <% if (page_name === 'nevoiasi') { %>active-color <% } %> p-0"
+                        href="/nevoiasi">Nevoiasi</a>
+                </li>
+
+            </ul>
+        </div>
+        <div class="d-flex col-md m-0 p-0 row justify-content-center mt-md-0 mt-3  ">
+            <div class="d-flex mb-3 flex-column sponsori  ">
+                <h3 class="align-self-center">Sponsori</h3>
+                <div class="d-flex justify-content-center flex-wrap">
+                    <h5 class="m-2 text-secondary font-weight-bold">MegaImage</h5>
+                    <h5 class="m-2 text-secondary">Carrefour</h5>
+                    <h5 class="m-2 text-secondary">Lidl</h5>
+                    <h5 class="m-2 text-secondary">Emag</h5>
+                    <h5 class="m-2 text-secondary">Jysk</h5>
+                </div>
+
+            </div>
+            <div class="input-group input-group-sm w-75 d-flex mb-5 flex-column align-content-center">
+                <h3 class="align-self-center">Aboneaza-te</h3>
+                <div class="d-flex mt-2 me-4 a-bit-width row-cols-2 justify-content-center">
+                    <form class="abonareform" action="/abonare" method="POST">
+                    <input type="text col"
+                        class="form-control input-focus border-secondary border-end-0 rounded-start rounded-0 bg-secondary"
+                        placeholder="Adresa de email" aria-label="Recipient's username"
+                        aria-describedby="button-addon2" required>
+                    <div class="input-group-append aboneaza-btn col">
+                        <button
+                            class="btn btn-outline-secondary text-nowrap border-start-0 rounded-end rounded-0 text-white"
+                             id="button-addon2">Aboneaza-te</button>
+                    </div>
+                </form>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+    <div class="container d-flex  p-0 mb-3 justify-content-center">
+        <span class="text-muted">Copyright &copy; NeoHelp 2021</span>
+    </div>
+</footer>
+
+<script>
+    // $(".sponsori h5").mouseenter(function () {
+    //     $(".sponsori h5").toggleClass("text-secondary").jq;
+    // });
+    // $(".sponsori h5").mouseleave(function () {
+    //     $(".sponsori h5").toggleClass("text-secondary").jq;
+    // });
+</script>

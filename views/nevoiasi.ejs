@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeoHelp</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+        integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+        crossorigin="anonymous" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <link rel="stylesheet" href="/style/style.css" type="text/css">
+    <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
+        integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.js"></script>
+</head>
+
+<body>
+
+
+
+    <%- include('./partials/navbar')  %>
+    <%- include('./partials/flash') %>
+
+
+    <section id="attribute" class="nevoiasi-section">
+        <div class="  section-div ">
+            <div class="lista-nevoiasi">
+                <% if(currentUser){ %>
+                <button class="btn doneaza" data-bs-toggle="modal" data-bs-target="#adauganevoias">Adaugă
+                    nevoiaş</button>
+                <% } %>
+                
+                <% for(let nevoias of nevoiasi) {%>
+                <!-- <a href="/nevoiasi/<%=nevoias._id %>"> -->
+                <div data-id=<%=nevoias._id %> class=" container nevoias  ">
+
+                    <img src="<%=nevoias.poza.url%>" alt="">
+                    <div class="info">
+
+                        <p><%= nevoias.nume %> </p>
+                        <p><%= nevoias.varsta %> </p>
+
+                    </div>
+
+
+                </div>
+                <!-- </a> -->
+                <% } %>
+
+
+            </div>
+            <div class="date-nevoiasi">
+                <div id="map" class="harta-nevoiasi"></div>
+                <div class="detalii-nevoiasi">
+
+                    <div class="info-div">
+                        <img src="" id="poza" alt="">
+                        <div class="info">
+                            <p>Nume: <span id="nume">Marian M.</span></p>
+                            <P>Vărstă: <span id="varsta">56 ani</span></P>
+                            <p>Telefon: <span id="telefon">0753358946</span></p>
+                            <p>Adresă: <span id="adresa">Str. Grigore Ureche, Nr. 3, Oradea</span></p>
+                            <p>Necesităţi: </p>
+                            <span id="necesitati">
+                                <ul>
+                                    <li>Măncare</li>
+                                    <li>Cazare</li>
+                                    <li>Haine</li>
+                                </ul>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="div-donatie">
+                        <form action="/donare" method="GET">
+                            <div class="valoare-donatie">
+                                <input id="5" type="radio" name="name" required>
+                                <label for="5">
+                                    <p>5</p>
+                                </label>
+                                <input id="10" type="radio" name="name" required>
+                                <label for="10">
+                                    <p>10</p>
+                                </label>
+                                <input id="20" type="radio" name="name" required>
+                                <label for="20">
+                                    <p>20</p>
+                                </label>
+                                <input id="50" type="radio" name="name" required>
+                                <label for="50">
+                                    <p>50</p>
+                                </label>
+                                <input id="sum" type="text" placeholder="Altă sumă" name="name" required>
+                                <label for="sum">
+                                    <p>Altă sumă</p>
+                                </label>
+                            </div>
+                            <button class="btn doneaza">Donează</button>
+                        </form>
+                    </div>
+
+                    <h2 class=" selectnevoias">Selectează un nevoiaş</h2>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="modal fade show" id="adauganevoias" tabindex="-1" aria-labelledby="exampleModalCenterTitle"
+            style="display: none;" aria-modal="true" role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <form action="/nevoiasi" method="POST" enctype="multipart/form-data">
+                        <div class="modal-color"></div>
+                        <div class="div1">
+                            <img class="nevoiasimg" src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png" alt="">
+                            <button class=" btn inregistreaza">Confirmă</button>
+                        </div>
+                        <div class="div2">
+                            <div class="detalii">
+                                <div class="edit-nume">
+                                    <label for="nume">Nume complet</label>
+                                    <input type="text" id="nume" name="nevoias[nume]">
+                                </div>
+                                <div class="edit-varsta">
+                                    <label for="varsta">Vărstă</label>
+                                    <input type="text" id="varsta" name="nevoias[varsta]" required>
+                                </div>
+
+                                <div class="edit-telefon">
+                                    <label for="nrtel">Telefon</label>
+                                    <input type="text" id="nrtel" name="nevoias[telefon]" required>
+                                </div>
+                                <div class="edit-adresa">
+                                    <label for="adresa">Adresa</label>
+                                    <input type="text" id="adresa" name="nevoias[adresa]" required>
+                                </div>
+                                <input type="file" accept='image/*' onchange='openFile(event)' id="pozanevoias"
+                                    name="nevoias[poza]" style="display: none;" />
+                                <button type="button" class="btn poza"
+                                    onclick="document.getElementById('pozanevoias').click();">Încarcă poză</button>
+                            </div>
+                            <div class="necesitati">
+                                <h5>Necesităţi:</h5>
+                                <div class="form-check">
+                                    <input class="form-check-input" name="nevoias[necesitati]" type="checkbox"
+                                        value="cazare" id="cazare">
+                                    <label class="form-check-label" for="cazare">
+                                        Cazare
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" name="nevoias[necesitati]" type="checkbox"
+                                        value="mancare" id="mancare">
+                                    <label class="form-check-label" for="mancare">
+                                        Măncare
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" name="nevoias[necesitati]" type="checkbox"
+                                        value="haine" id="haine">
+                                    <label class="form-check-label" for="haine">
+                                        Haine
+                                    </label>
+                                </div>
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <%- include('./partials/footer')  %>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous">
+
+    </script>
+
+    <script>
+        const mapToken = '<%-process.env.MAPBOX_TOKEN%>';
+        
+        const nevoiasi = {
+            
+            features: <%-JSON.stringify(nevoiasi)%>
+            
+        };
+    </script>
+
+
+
+    <script>
+        function getNevoias(id) {
+            const xmlHttp = new XMLHttpRequest();
+            xmlHttp.open("GET", `http://localhost:3000/nevoiasi/${id}`, false); // false for synchronous request
+            xmlHttp.send(null);
+            return JSON.parse(xmlHttp.responseText);
+        }
+
+        // const res = httpGet();
+        // console.log(res);
+
+
+
+
+        // PREPOPULATION OF MODAL INPUTS WITH NEVOIAS DATA
+        $(".lista-nevoiasi .nevoias").each(function () {
+            $(this).click(function () {
+                $(".mapboxgl-popup").css("display", "none")
+                const currentId = $(this).attr("data-id");
+                const dateNevoias = getNevoias(currentId);
+                $("#nume").text(dateNevoias.nume)
+                $("#poza").attr('src', dateNevoias.poza.url)
+                $("#varsta").text(dateNevoias.varsta)
+                $("#telefon").text(dateNevoias.telefon)
+                $("#adresa").text(dateNevoias.adresa)
+                let necesitati = '<ul>';
+                for (let necesitate of dateNevoias.necesitati) {
+                    necesitati += `<li>${necesitate}</li>`
+                }
+                necesitati += '</ul>'
+                $("#necesitati").html(
+                    necesitati
+                ).css("list-style-type", "none")
+
+                if (!$(this).hasClass("selected-nevoias") && $(".lista-nevoiasi .nevoias").hasClass(
+                        "selected-nevoias")) {
+
+                    $(".lista-nevoiasi .nevoias").removeClass("selected-nevoias")
+                    $(this).toggleClass("selected-nevoias")
+
+
+
+
+
+                } else(
+                    $(this).addClass("selected-nevoias")
+
+                )
+
+                if ($(".mapboxgl-popup-tip").length || $(".selected-nevoias").length) {
+                    console.log("hello")
+                    $(".info-div").css("display", "flex")
+                    $(".div-donatie").css("display", "flex")
+                    $(".selectnevoias").css("display", "none")
+                } else {
+                    console.log("bye")
+                    $(".info-div").css("display", "none")
+                    $(".div-donatie").css("display", "none")
+                    $(".selectnevoias").css("display", "block")
+                }
+
+
+
+
+
+            });
+
+
+        });
+
+      
+
+        // UPLOAD PICTURE FOR NEVOIAS
+        const openFile = function (file) {
+            
+            const input = file.target;
+
+            const reader = new FileReader();
+            reader.onload = function () {
+                
+                const dataURL = reader.result;
+                
+                const output = $('.nevoiasimg')
+                output.attr('src', dataURL);
+
+
+            };
+            reader.readAsDataURL(input.files[0]);
+        };
+
+
+
+        $(".valoare-donatie label").each(function () {
+            $(this).click(function () {
+                if ($(this).attr("for") == 'sum') {
+                    console.log($(this))
+                    $("#sum").css("display", "block");
+                    $(this).css("display", "none")
+                    $(".valoare-donatie input").prop('required', false)
+                    $(".valoare-donatie label p").removeClass("clickedinput")
+
+
+                } else {
+
+
+                    $("#sum").css("display", "none")
+                    $(".valoare-donatie label").last().css("display", "block")
+                    $(".valoare-donatie input").prop('required', true)
+                    $(".valoare-donatie input").last().prop('required', false)
+                    if (!$(this).find("p").hasClass("clickedinput") && $(".valoare-donatie label p")
+                        .hasClass("clickedinput")) {
+                        $(".valoare-donatie label p").removeClass("clickedinput")
+                        $(this).find("p").toggleClass("clickedinput")
+                    } else {
+                        $(this).find("p").addClass("clickedinput")
+                    }
+                }
+
+            });
+        });
+    </script>
+    <script src="/scripts/map.js"></script>
+    <script>
+
+    </script>
+</body>
+
+</html>

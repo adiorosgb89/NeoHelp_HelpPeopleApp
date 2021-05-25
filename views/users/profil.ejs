@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeoHelp</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+        integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+        crossorigin="anonymous" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <link rel="stylesheet" href="/style/style.css" type="text/css">
+    <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
+        integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+
+
+    <%- include('../partials/navbar')  %>
+    <%- include('../partials/flash') %>
+    <section class="profil-section">
+        <div class="section-div">
+            <div class="tab-div">
+                <h4 class="active-tab">Profil</h4>
+                <div class="line"></div>
+                <h4 class="margin-tab">Nevoiaşi</h4>
+
+            </div>
+            <div class="contenttab-div ">
+                <div class="profil-div">
+                    <div class="div1">
+                        <form method="POST" enctype="multipart/form-data">
+                            <img class="userimg" alt="">
+                            <input type="file" accept='image/*' name="poza" onchange='openFileUser(event)' id="pozauser"
+                                style="display: none;" />
+                            <button type="button" class="btn poza"
+                                onclick="document.getElementById('pozauser').click();">Încarcă
+                                poză</button>
+                            <button class="btn btn-sm poza ">Salvează poza schimbată</button>
+                        </form>
+                        <a href="/logout"> <button class=" btn inregistreaza">Deconectează-te</button></a>
+                        <form action="profil/<%=currentUser._id%>?_method=DELETE" method="POST">
+                            <button class=" btn doneaza">Şterge contul</button>
+                        </form>
+                    </div>
+                    <div class="div2">
+                        <form method="POST">
+                            <div class="edit-nume">
+                                <label for="nume">Nume complet:</label>
+                                <input type="text" id="nume" name="nume" disabled>
+                            </div>
+                            <div class="edit-email">
+                                <label for="email">Email:</label>
+                                <input type="email" id="email" name="email" disabled>
+                            </div>
+
+                            <button data-id=<%=currentUser._id  %> class="btn btn-sm hidden">Editeaza</button>
+                        </form>
+                        <button class="btn btn-sm notreal nothidden">Editeaza</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contenttab-div2 hidden">
+                <div class="profil-div">
+
+                    <% if(nevoiasi) {%>
+                    <% let exista = 0 %>
+                    <% for(let nevoias of nevoiasi) {%>
+
+                    <% if(currentUser && nevoias.autor.equals(currentUser._id) ){ %>
+                    <%exista= 1 %>
+                    <div class="nevoias-istoric">
+                        <form action="nevoiasi/<%=nevoias._id%>?_method=DELETE" method="POST">
+                            <button class="btn btn-sm sterge">Şterge</button>
+                        </form>
+                        <button data-id=<%=nevoias._id %> class="btn btn-sm edit" data-bs-toggle="modal"
+                            data-bs-target="#exampleModalCenter">Editează</button>
+                        <!-- <% var utc = new Date().toJSON().slice(0,10).replace(/-/g,'/'); %> -->
+                        <p><%= nevoias.dataCreare %> - </p>
+                        <span> <%= nevoias.nume %></span>
+                    </div>
+
+                    <%}}  if(exista === 0){%>
+                    <div class="nevoias-istoric">Crează nevoiaşi</div>
+                    <%}} %>
+
+
+
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade show" id="exampleModalCenter" tabindex="-1" aria-labelledby="exampleModalCenterTitle"
+            style="display: none;" aria-modal="true" role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <form action="" method="POST" enctype="multipart/form-data">
+                        <div class="modal-color"></div>
+                        <div class="div1">
+                            <img class="nevoiasimg" alt="">
+                            <button class=" btn inregistreaza">Confirmă</button>
+                        </div>
+                        <div class="div2">
+                            <div class="detalii">
+                                <div class="edit-nume">
+                                    <label for="nume">Nume complet</label>
+                                    <input type="text" id="nume" name="nevoias[nume]">
+                                </div>
+                                <div class="edit-varsta">
+                                    <label for="varsta">Vărstă</label>
+                                    <input type="text" id="varsta" name="nevoias[varsta]">
+                                </div>
+
+                                <div class="edit-telefon">
+                                    <label for="nrtel">Telefon</label>
+                                    <input type="text" id="nrtel" name="nevoias[telefon]">
+                                </div>
+                                <div class="edit-adresa">
+                                    <label for="adresa">Adresa</label>
+                                    <input type="text" id="adresa" name="nevoias[adresa]">
+                                </div>
+                                <input type="file" accept='image/*'  id="pozanevoias"
+                                    name="nevoias[poza]" style="display: none;" />
+                                <button type="button" class="btn poza"
+                                    onclick="document.getElementById('pozanevoias').click();">Încarcă poză</button>
+                            </div>
+                            <div class="necesitati">
+                                <h5>Necesităţi:</h5>
+                                <div class="form-check">
+                                    <input class="form-check-input" name="nevoias[necesitati]" type="checkbox"
+                                        value="cazare" id="cazare">
+                                    <label class="form-check-label" for="cazare">
+                                        Cazare
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" name="nevoias[necesitati]" type="checkbox"
+                                        value="mancare" id="mancare">
+                                    <label class="form-check-label" for="mancare">
+                                        Măncare
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" name="nevoias[necesitati]" type="checkbox"
+                                        value="haine" id="haine">
+                                    <label class="form-check-label" for="haine">
+                                        Haine
+                                    </label>
+                                </div>
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <%- include('../partials/footer')  %>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous">
+    </script>
+
+    <script>
+        //   $(".contenttab-div .div2 form .edit-nume input").val(dateUser.username);
+        //  $(".contenttab-div .div2 form .edit-email input").val(dateUser.email)
+
+        function getNevoias(id) {
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.open("GET", `http://localhost:3000/profil/${id}`, false); // false for synchronous request
+            xmlHttp.send(null);
+            return JSON.parse(xmlHttp.responseText);
+        }
+
+        function getUser(id) {
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.open("GET", `http://localhost:3000/user/${id}`, false); // false for synchronous request
+            xmlHttp.send(null);
+            return JSON.parse(xmlHttp.responseText);
+        }
+        let modPoza = false;
+        let dateNevoias; 
+
+        // EDIT NEVOIAS
+        $(".contenttab-div2 .edit").each(function () {
+            $(this).click(function () {
+                const currentId = $(this).attr("data-id");
+                 dateNevoias = getNevoias(currentId);
+                $(".profil-section .modal-content #nume").val(dateNevoias.nume)
+                $(".profil-section .modal-content .nevoiasimg").attr('src', dateNevoias.poza.url)
+                $(".profil-section .modal-content #varsta").val(dateNevoias.varsta)
+                $(".profil-section .modal-content #nrtel").val(dateNevoias.telefon)
+                $(".profil-section .modal-content #adresa").val(dateNevoias.adresa)
+                $('.profil-section .modal-content input[name="nevoias[necesitati]"]').val(dateNevoias
+                    .necesitati).attr('checked', 'checked')
+                $(".profil-section .modal-content form").attr("action",
+                    `/nevoiasi/${dateNevoias._id}/${modPoza}?_method=PUT`)
+
+                    
+
+                    if(currentId){
+                        $("#pozanevoias").attr("onChange", `openFile(event)`)
+              
+                    }
+
+
+            });
+
+        });
+        // UPDATE PICTURE FOR NEVOIAS
+        const openFile = function (file) {
+                const input = file.target;
+                const reader = new FileReader();
+                reader.onload = function () {
+                    const dataURL = reader.result;
+                    dateNevoias.poza.url = dataURL
+                    const output = $('.nevoiasimg')
+                    output.attr('src', dateNevoias.poza.url);
+
+                };
+                reader.readAsDataURL(input.files[0]);
+                modPoza = true;
+                $(".profil-section .modal-content form").attr("action",
+                    `/nevoiasi/${dateNevoias._id}/${modPoza}?_method=PUT`)
+            }
+       
+        // schimbare intre taburi
+        $(".tab-div h4").each(function () {
+            $(this).click(function () {
+                if ($(this).hasClass("margin-tab") && !$(this).hasClass("active-tab")) {
+                    $(".active-tab").removeClass("active-tab").addClass("margin-tab")
+                    $(this).removeClass("margin-tab").addClass("active-tab")
+                    $(".contenttab-div").toggleClass("hidden")
+                    $(".contenttab-div2").toggleClass("hidden")
+                    if(!$(".contenttab-div2").hasClass("hidden")){
+                        $(".contenttab-div2").css("display","flex")
+                    } else {
+                        $(".contenttab-div2").css("display","none")
+                    }
+                }
+            });
+
+        });
+
+        // edit user
+
+        const currentId = $(".contenttab-div .div2 form button").attr("data-id");
+        const dateUser = getUser(currentId);
+        $(".contenttab-div .div2 form .edit-nume input").val(dateUser.username);
+        $(".contenttab-div .div2 form .edit-email input").val(dateUser.email)
+
+        $(".contenttab-div .div2 form button").click(function (e) {
+            $(".contenttab-div .div2 form").attr("action", `/user/${dateUser._id}?_method=PUT`)
+
+            // const currentId = $(this).attr("data-id"); 
+            // const dateUser = getUser(currentId);
+            //dateUser.username = $(".contenttab-div .div2 form .edit-nume input").val()
+            //dateUser.email = $(".contenttab-div .div2 form .edit-email input").val();
+            // $(".contenttab-div .div2 form .edit-nume input").val(dateUser.username);
+            // $(".contenttab-div .div2 form .edit-email input").val(dateUser.email)
+            $(this).toggleClass("nothidden").toggleClass("hidden")
+            $(".contenttab-div .div2 .notreal").toggleClass("nothidden").toggleClass("hidden")
+        })
+        $(".contenttab-div .div2 .notreal").click(function (e) {
+            $(this).toggleClass("nothidden").toggleClass("hidden")
+            $(".contenttab-div .div2 form button").toggleClass("hidden").toggleClass("nothidden")
+
+            if (!$(".contenttab-div .div2 form button").hasClass("pressed")) {
+                $(".contenttab-div .div2 form button").addClass("pressed")
+                $(".contenttab-div .div2 input").prop("disabled", false).css('border', '1px solid #F57B50');
+            }
+        })
+
+        // UPDATE PICTURE FROM USER
+        $(".contenttab-div .div1 form .btn-sm").click(function (e) {
+            $(".contenttab-div .div1 form:first-of-type").attr("action", `/userpic/${dateUser._id}?_method=PUT`)
+        })
+        $(".userimg").attr('src', dateUser.poza.url);
+
+        const openFileUser = function (file) {
+            const input = file.target;
+
+            const reader = new FileReader();
+            reader.onload = function () {
+                const dataURL = reader.result;
+                dateUser.poza.url = dataURL
+                const output = $('.userimg')
+                output.attr('src', dateUser.poza.url);
+
+
+            };
+            reader.readAsDataURL(input.files[0]);
+        };
+
+        // UPDATE PICTURE FOR NEVOIAS
+
+        // const currentNevoiasId = $(".contenttab-div2 .edit").attr("data-id");
+        // $(".contenttab-div2 .edit").click(function(){
+        //     console.log($(this).attr("data-id"))
+        //     console.log($(".contenttab-div2 .edit").attr("data-id"))
+        // })
+        
+
+        // if (currentNevoiasId) {
+        //     const dateNevoias = getNevoias(currentNevoiasId);
+        //     $(".nevoiasimg").attr('src', dateNevoias.poza.url);
+
+        //     const openFile = function (file) {
+        //         var input = file.target;
+        //         var reader = new FileReader();
+        //         reader.onload = function () {
+        //             var dataURL = reader.result;
+        //             dateNevoias.poza.url = dataURL
+        //             var output = $('.nevoiasimg')
+        //             output.attr('src', dateNevoias.poza.url);
+
+        //         };
+        //         reader.readAsDataURL(input.files[0]);
+        //         modPoza = true;
+        //         $(".profil-section .modal-content form").attr("action",
+        //             `/nevoiasi/${dateNevoias._id}/${modPoza}?_method=PUT`)
+        //     }
+        // }
+    </script>
+
+
+</body>
+
+</html>

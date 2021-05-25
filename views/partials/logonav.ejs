@@ -1,0 +1,245 @@
+<nav class="navbar  fixed-top navbar-expand-lg navbar-light ">
+    <div class="container-fluid position-relative mt-2">
+        <a class="fs-2 logo mt-2 ms-5 logoneohelp" href="/">NeoHelp</a>
+        <div class="d-flex position-absolute logo-shadow rounded-circle" id="expand">
+        </div>
+
+    </div>
+    <h5 class="inapoi"><a href="/">&larr;Înapoi la pagina principală</a></h5>
+</nav>
+
+
+</nav>
+
+
+<script>
+    const expandDiv = document.querySelector("#expand");
+    const speed = 0.5;
+    const scrolltop = window.pageYOffset; // get number of pixels document has scrolled vertically
+    const scrollAndSpeed = (scrolltop / speed);
+    //Expand using transform
+    expandDiv.style.position = "relative";
+    doResize();
+
+    function addWhiteText() {
+        $(".nav-link").slice(1).addClass("text-white");
+
+    }
+
+    function removeWhiteText() {
+        $(".nav-link").slice(1).removeClass("text-white");
+
+    }
+
+    function addShadow() {
+        $("#expand").addClass("logo-shadow");
+    }
+
+    function removeShadow() {
+        $("#expand").removeClass("logo-shadow");
+    }
+
+
+    // expandMenu = () => {
+    //     if ($(".navbar-toggler").attr('aria-expanded') === "true" && window.innerWidth <= 991) {
+    //         $("#expand").css("margin-top", "190px");
+    //     }
+    // }
+
+
+    // expandNone = () => {
+    //     if ($(".navbar-toggler").attr('aria-expanded') === "false" && innerWidth > 991) {
+    //         $("#expand").css("margin-top", "0px");
+    //     }
+    // }
+
+    function doResize() {
+        if (this.innerWidth <= 768 || window.pageYOffset >= 5) {
+            if ($("#expand").hasClass("rounded-circle")) {
+                expandDiv.classList.remove("rounded-circle");
+                $(".navbar-collapse").removeClass('show');
+            }
+            expandDiv.style.transition = "all ease 0.5s";
+            expandDiv.style.transform = "scalex( " + Math.min(Math.max(scrollAndSpeed, 10), 10) + ")";
+            addWhiteText();
+            removeShadow();
+
+        } else {
+            if (!$("#expand").hasClass("rounded-circle")) {
+                expandDiv.classList.add("rounded-circle");
+                $(".navbar-collapse").removeClass('show');
+                $("#expand").css({
+                    marginTop: ""
+                });
+            }
+            expandDiv.style.transition = "all ease 0.2s";
+            expandDiv.style.position = "absolute";
+            expandDiv.style.transform = "scalex( " + Math.min(Math.max(scrollAndSpeed, 1), 10) + ")";
+            expandDiv.style.removeProperty('transform');
+            removeWhiteText();
+            addShadow();
+            // $(".navbar-collapse").removeClass('show');
+
+
+
+        }
+
+        if (this.innerWidth <= 991) {
+            $("#navUl").addClass("mt-5");
+
+        } else {
+            $("#navUl").removeClass("mt-5");
+            // expandDiv.classList.add("rounded-circle");
+            // expandDiv.style.transition = "all ease 0.2s";
+            // expandDiv.style.position = "absolute";
+            // expandDiv.style.transform = "scalex( " + Math.min(Math.max(scrollAndSpeed, 1), 10) + ")";
+            // expandDiv.style.removeProperty('transform');
+            // removeWhiteText();
+            // addShadow();
+            $("#expand").css({
+                marginTop: ""
+            });
+            $(".navbar-collapse").removeClass('show');
+        }
+
+    }
+
+
+    window.addEventListener('resize', function () {
+        doResize();
+
+    }, false);
+
+
+
+
+
+    document.querySelector("button.navbar-toggler").addEventListener("click", function () {
+
+        if ($(".navbar-toggler").attr('aria-expanded') === "true") {
+            if (window.innerWidth <= 768 || window.pageYOffset >= 5) {
+                $("#expand").css({
+                    marginTop: "190px"
+                });
+            } else {
+                $("#expand").css({
+                    marginTop: ""
+                });
+            }
+
+        } else {
+
+            $("#expand").css({
+                marginTop: ""
+            });
+
+        }
+
+
+    }, false);
+
+
+
+
+
+
+
+    function expanding() {
+        const scrolltop = window.pageYOffset; // get number of pixels document has scrolled vertically
+        const scrollAndSpeed = (scrolltop / speed);
+
+
+        //Expand using transform
+
+        expandDiv.style.position = "relative";
+
+
+
+        if (scrolltop >= 5) {
+
+
+            expandDiv.classList.remove("rounded-circle");
+            expandDiv.style.transition = "all 0.2s ease";
+            expandDiv.style.transform = "scalex( " + Math.min(Math.max(scrollAndSpeed, 10), 10) + ")";
+            addWhiteText();
+            removeShadow();
+            // if ($(".navbar-toggler").attr('aria-expanded') === "true" && window.innerWidth <= 991) {
+            //     $("#expand").css("margin-top", "190px");
+            // }
+
+
+
+
+
+
+
+
+        } else if (scrolltop <= 5) {
+            if (window.innerWidth >= 768) {
+                expandDiv.classList.add("rounded-circle");
+                expandDiv.style.transition = "all 0.5s ease";
+                expandDiv.style.position = "absolute";
+                expandDiv.style.transform = "scalex( " + Math.min(Math.max(scrollAndSpeed, 1), 10) + ")";
+                expandDiv.style.removeProperty('transform');
+                removeWhiteText();
+                addShadow();
+                if (window.pageYOffset <= 5) {
+                    $("#expand").css({
+                        marginTop: ""
+                    });
+                }
+                // if ($(".navbar-toggler").attr('aria-expanded') === "false" && innerWidth > 991) {
+                //     $("#expand").css("margin-top", "0px");
+                // }
+                $(".navbar-collapse").removeClass('show');
+            }
+
+        }
+
+
+
+
+        //Or using width
+        // expandDiv.style.width = Math.min(Math.max(scrollAndSpeed, 20), 95) + "%";
+
+    }
+
+
+    window.addEventListener('scroll', function () { // on page scroll
+        requestAnimationFrame(expanding); // call parallaxing()
+        doResize();
+
+    }, false);
+
+
+
+    // this.addEventListener('resize', function () {
+    //     if (this.innerWidth <= 768) {
+    //         expandDiv.classList.remove("rounded-circle");
+    //         expandDiv.style.transition = "ease 0.5s";
+    //         expandDiv.style.transform = "scalex( " + Math.min(Math.max(scrollAndSpeed, 10), 10) + ")";
+    //         addWhiteText();
+    //         removeShadow();
+    //         expandMenu();
+    //     } else {
+    //         expandDiv.classList.add("rounded-circle");
+    //         expandDiv.style.transition = "ease 0.1s";
+    //         expandDiv.style.position = "absolute";
+    //         expandDiv.style.transform = "scalex( " + Math.min(Math.max(scrollAndSpeed, 1), 10) + ")";
+    //         expandDiv.style.removeProperty('transform');
+    //         removeWhiteText();
+    //         addShadow();
+    //         expandNone();
+
+
+    //     }
+
+    //     if (this.innerWidth <= 991) {
+    //         $("#navUl").addClass("mt-5");
+
+    //     } else {
+    //         $("#navUl").removeClass("mt-5");
+    //     }
+
+    // }, false);
+</script>
