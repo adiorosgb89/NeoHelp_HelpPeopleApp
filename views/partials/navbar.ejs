@@ -303,11 +303,12 @@
     //     }
 
     // }, false);
+    
 
     // SHOW CURRENT USER PICTURE
     function getUserId(id) {
         var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("GET", `http://localhost:3000/user/${id}`, false); // false for synchronous request
+        xmlHttp.open("GET", `https://neohelp.herokuapp.com/user/${id}`, false); // false for synchronous request
         xmlHttp.send(null);
         return JSON.parse(xmlHttp.responseText);
     }
