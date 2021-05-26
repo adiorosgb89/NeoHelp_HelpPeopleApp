@@ -24,7 +24,7 @@ const {isLoggedIn,isAutor} = require('./middleware');
 const Nevoias = require('./models/nevoiasi');
 const User = require('./models/user');
 
-const MongoDBStore = require('connect-mongo')(session);
+const MongoDBStore = require('connect-mongo');
 
 const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/licenta';
 // 'mongodb://localhost:27017/licenta'
@@ -61,22 +61,21 @@ app.use(helmet({contentSecurityPolicy: false}));
 
 const secret = process.env.SECRET || 'aplicatiedenevoiasi'
 
-const store = new MongoDBStore({
-  url: dbUrl,
-  secret,
-  touchAfter: 24 * 60 * 60
-});
 
-store.on("error", function(e){
-  console.log("SESSION STORE ERROR", e);
-})
+
+
 
 const sessionConfig = {
-  store,
+  
   name: 'session',
   secret,
   resave: false,
   saveUninitialized: true,
+  store: MongoDBStore.create({
+    mongoUrl: dbUrl,
+    secret,
+    touchAfter: 24 * 60 * 60
+  }),
   cookie:{
     httpOnly: true,
     // secure: true,
