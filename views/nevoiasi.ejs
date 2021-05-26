@@ -200,7 +200,7 @@
     <script>
         function getNevoias(id) {
             const xmlHttp = new XMLHttpRequest();
-            xmlHttp.open("GET", `http://localhost:3000/nevoiasi/${id}`, false); // false for synchronous request
+            xmlHttp.open("GET", `https://neohelp.herokuapp.com/nevoiasi/${id}`, false); // false for synchronous request
             xmlHttp.send(null);
             return JSON.parse(xmlHttp.responseText);
         }
