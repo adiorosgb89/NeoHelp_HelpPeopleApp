@@ -24,9 +24,11 @@ const {isLoggedIn,isAutor} = require('./middleware');
 const Nevoias = require('./models/nevoiasi');
 const User = require('./models/user');
 
-// const dbUrl = process.env.DB_URL;
+const MongoDBStore = require('connect-mongo')(session);
+
+const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/licenta';
 // 'mongodb://localhost:27017/licenta'
-mongoose.connect('mongodb://localhost:27017/licenta', {
+mongoose.connect(dbUrl, {
   useNewUrlParser: true,
   useCreateIndex: true,
   useUnifiedTopology: true,
@@ -57,10 +59,22 @@ app.use(methodOverride('_method'));
 app.use(mongoSanitize());
 app.use(helmet({contentSecurityPolicy: false}));
 
+const secret = process.env.SECRET || 'aplicatiedenevoiasi'
+
+const store = new MongoDBStore({
+  url: dbUrl,
+  secret,
+  touchAfter: 24 * 60 * 60
+});
+
+store.on("error", function(e){
+  console.log("SESSION STORE ERROR", e);
+})
 
 const sessionConfig = {
+  store,
   name: 'session',
-  secret: 'paginadenevoiasi',
+  secret,
   resave: false,
   saveUninitialized: true,
   cookie:{
@@ -325,9 +339,7 @@ app.get('/login', (req, res) => {
   res.render('users/login');
 });
 app.post('/login', passport.authenticate('local', {failureFlash:true, failureRedirect: '/login'}), (req, res) => {
-  
- // delete req.session.returnTo;
- req.flash('success', 'Bine ai revenit!')
+  req.flash('success', 'Bine ai revenit!')
   res.redirect('/');
 });
 
